@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Register</title>
+
+    <style>
+        /* Basic reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column; /* Adjust to center content vertically and place the back button on top */
+        }
+
+        .back-button {
+            padding: 10px 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-bottom: 20px; /* Space between back button and the auth container */
+            text-align: center;
+            width: 100%;
+            max-width: 150px;
+        }
+
+        .back-button:hover {
+            background-color: #218838;
+        }
+
+        .auth-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.6rem;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .feedback {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #333;
+        }
+
+        .toggle-links {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .toggle-links a {
+            color: #007BFF;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .toggle-links a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            h2 {
+                font-size: 1.4rem;
+            }
+
+            .form-group input {
+                font-size: 0.9rem;
+            }
+
+            button {
+                font-size: 0.9rem;
+            }
+
+            .back-button {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Back to Home Button -->
+    <button class="back-button" onclick="window.location.href='index.html'">Back to Home</button>
+
+    <!-- Authentication container -->
+    <div class="auth-container" id="auth-container">
+        <!-- Login Form -->
+        <div id="login-form">
+            <h2>Login to Your Account</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="login-username">Username</label>
+                    <input type="text" id="login-username" name="username" placeholder="Enter your username" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" name="password" placeholder="Enter your password" required>
+                </div>
+                <button type="submit">Login</button>
+            </form>
+            <div class="toggle-links">
+                <p>Don't have an account? <a href="#" id="to-register">Register here</a></p>
+            </div>
+        </div>
+
+        <!-- Register Form -->
+        <div id="register-form" style="display:none;">
+            <h2>Create an Account</h2>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="register-username">Username</label>
+                    <input type="text" id="register-username" name="username" placeholder="Choose a username" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-email">Email</label>
+                    <input type="email" id="register-email" name="email" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Password</label>
+                    <input type="password" id="register-password" name="password" placeholder="Choose a password" required>
+                </div>
+                <button type="submit">Register</button>
+            </form>
+            <div class="toggle-links">
+                <p>Already have an account? <a href="#" id="to-login">Login here</a></p>
+            </div>
+        </div>
+
+        <div class="feedback"></div>
+    </div>
+
+    <script>
+        // User behavior tracking object
+        let typingData = {
+            login: { username: "", password: "" },
+            register: { username: "", email: "", password: "" }
+        };
+
+        // Track typing behavior for login fields
+        document.getElementById('login-username').addEventListener('input', function(event) {
+            typingData.login.username = event.target.value;
+            console.log('Login Username typing behavior:', typingData.login.username);
+        });
+
+        document.getElementById('login-password').addEventListener('input', function(event) {
+            typingData.login.password = event.target.value;
+            console.log('Login Password typing behavior:', typingData.login.password);
+        });
+
+        // Track typing behavior for register fields
+        document.getElementById('register-username').addEventListener('input', function(event) {
+            typingData.register.username = event.target.value;
+            console.log('Register Username typing behavior:', typingData.register.username);
+        });
+
+        document.getElementById('register-email').addEventListener('input', function(event) {
+            typingData.register.email = event.target.value;
+            console.log('Register Email typing behavior:', typingData.register.email);
+        });
+
+        document.getElementById('register-password').addEventListener('input', function(event) {
+            typingData.register.password = event.target.value;
+            console.log('Register Password typing behavior:', typingData.register.password);
+        });
+
+        // Login form submission
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+
+            console.log('User login attempt with username:', username, 'and password:', password);
+            document.querySelector('.feedback').innerText = `Welcome, ${username}!`;
+
+            // Redirect to home page after successful login
+            setTimeout(function() {
+                window.location.href = 'index.html'; // Redirect to home page
+            }, 1500); // Delay redirect to allow user to see the feedback message
+        });
+
+        // Register form submission
+        document.getElementById('registerForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const username = document.getElementById('register-username').value;
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+
+            console.log('User registration attempt with username:', username, 'email:', email, 'and password:', password);
+            document.querySelector('.feedback').innerText = `Welcome, ${username}! Your account has been created.`;
+        });
+
+        // Toggle between login and register forms
+        document.getElementById('to-register').addEventListener('click', function() {
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('register-form').style.display = 'block';
+        });
+
+        document.getElementById('to-login').addEventListener('click', function() {
+            document.getElementById('login-form').style.display = 'block';
+            document.getElementById('register-form').style.display = 'none';
+        });
+    </script>
+
+</body>
+</html>
